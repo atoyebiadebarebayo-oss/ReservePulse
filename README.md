@@ -9,7 +9,7 @@ ReservePulse is an automated table and event reservation platform built for hosp
 
 ## 🚀 Live Demo
 
-Explore the live application here: **[]
+Explore the live application here: **[https://reservepulse.netlify.app]
 
 ---
 

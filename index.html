@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReservePulse — Event & Table Booking Engine</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <i class="fa-solid fa-calendar-check"></i> Reserve<span>Pulse</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn-icon" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="view-bookings-btn" class="btn btn-secondary">
+          <i class="fa-solid fa-list-check"></i> Manage Bookings (<span id="booking-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-banner">
+    <div class="banner-container">
+      <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Instant Table & Event Reservation</span>
+      <h1>Book Your Exclusive Experience with Chef Ade</h1>
+      <p>Select your preferred reservation type, choose a time slot, and receive instant confirmation via WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- Main Booking Interface -->
+  <main class="booking-section">
+    <div class="booking-container">
+      
+      <!-- Left: Interactive Booking Form -->
+      <div class="booking-card">
+        <h3><i class="fa-solid fa-pen-to-square"></i> Reservation Details</h3>
+        <form id="reservation-form">
+          <div class="form-group">
+            <label for="guest-name"><i class="fa-solid fa-user"></i> Full Name *</label>
+            <input type="text" id="guest-name" required placeholder="e.g. Adebayo Atoyebi">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="guest-phone"><i class="fa-solid fa-phone"></i> WhatsApp Number *</label>
+              <input type="tel" id="guest-phone" required placeholder="07040416469">
+            </div>
+            <div class="form-group">
+              <label for="guest-count"><i class="fa-solid fa-users"></i> Guests / Seats *</label>
+              <select id="guest-count" required>
+                <option value="1 Guest">1 Guest</option>
+                <option value="2 Guests" selected>2 Guests (Table for 2)</option>
+                <option value="4 Guests">4 Guests (Family Table)</option>
+                <option value="6+ VIP Group">6+ VIP Private Group</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="res-date"><i class="fa-solid fa-calendar-day"></i> Reservation Date *</label>
+              <input type="date" id="res-date" required>
+            </div>
+            <div class="form-group">
+              <label for="res-time"><i class="fa-solid fa-clock"></i> Preferred Time *</label>
+              <select id="res-time" required>
+                <option value="12:00 PM - Lunch">12:00 PM (Lunch)</option>
+                <option value="02:30 PM - Afternoon">02:30 PM (Afternoon)</option>
+                <option value="06:00 PM - Dinner Session A">06:00 PM (Dinner Session A)</option>
+                <option value="08:30 PM - Dinner Session B" selected>08:30 PM (Dinner Session B)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="res-type"><i class="fa-solid fa-champagne-glasses"></i> Experience Type</label>
+            <select id="res-type">
+              <option value="Ade Chef Special Tasting Menu">Ade Chef Special Tasting Menu</option>
+              <option value="Standard Table Booking">Standard Table Booking</option>
+              <option value="VIP Birthday / Event Celebration">VIP Birthday / Event Celebration</option>
+              <option value="Corporate Executive Dinner">Corporate Executive Dinner</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="special-requests"><i class="fa-solid fa-comment-dots"></i> Special Requests / Dietary Notes</label>
+            <textarea id="special-requests" rows="3" placeholder="e.g. Quiet corner table, anniversary setup, allergic to peanuts..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            <i class="fa-brands fa-whatsapp"></i> Confirm & Send Reservation to Ade (07040416469)
+          </button>
+        </form>
+      </div>
+
+      <!-- Right: Venue Overview & Real-Time Stats -->
+      <div class="info-sidebar">
+        <div class="info-card">
+          <h4><i class="fa-solid fa-circle-info"></i> Booking Guidelines</h4>
+          <ul class="info-list">
+            <li><i class="fa-solid fa-check text-success"></i> Instant WhatsApp route directly to Chef Ade.</li>
+            <li><i class="fa-solid fa-check text-success"></i> Free cancellation up to 2 hours prior.</li>
+            <li><i class="fa-solid fa-check text-success"></i> VIP setups include complimentary Ade Welcome Drink.</li>
+          </ul>
+        </div>
+
+        <div class="info-card stats-card">
+          <h4><i class="fa-solid fa-chart-line"></i> Today's Availability</h4>
+          <div class="stat-box">
+            <span>Tables Available:</span>
+            <strong id="tables-left">8 / 15 Tables</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 53%;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Manage Bookings Modal -->
+  <div id="bookings-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-book-bookmark"></i> Active Reservations Log</h3>
+        <button id="close-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="bookings-list" class="bookings-list-container">
+          <p class="empty-msg">No active reservations stored yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
